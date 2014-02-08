@@ -2,8 +2,10 @@ package net.devmachine.carexpert;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextPaint;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -15,11 +17,12 @@ public class GameActivity extends Activity
     public static final String  SCORE     = "SCORE";
     private static final String TAG       = "CarExpert.Game";
 
-    private Game                game      = gameFactory();
+    private Game                game;
     private Button[]            buttonMap = new Button[4];
     private Question            currentQuestion;
     private CarImage            currentImage;
     private ImageView           imageView;
+    private Dimensions          screenDimensions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,6 +40,24 @@ public class GameActivity extends Activity
                 selectAnswer(button.getText().toString());
             }
         };
+
+        // Convenience wrapper around screen dimensions.
+        screenDimensions = new Dimensions() {
+
+            @Override
+            public int getWidth()
+            {
+                return getResources().getDisplayMetrics().widthPixels;
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return getResources().getDisplayMetrics().heightPixels;
+            }
+        };
+
+        game = gameFactory();
 
         buttonMap[0] = (Button) findViewById(R.id.variantA);
         buttonMap[1] = (Button) findViewById(R.id.variantB);
@@ -85,12 +106,16 @@ public class GameActivity extends Activity
     {
         if (currentQuestion.hasNexImage()) {
             currentImage = currentQuestion.getNextImage();
-            imageView.setImageResource(currentImage.getResourceId());
+            
+            Bitmap bitmap = currentImage.getBitmapInDimensions(screenDimensions);
+            drawImageInfo(bitmap, String.valueOf(currentImage.getIndex() + 1));
+
+            imageView.setImageBitmap(bitmap);
         } else {
             Toast.makeText(getApplicationContext(), R.string.no_image_previews, Toast.LENGTH_SHORT).show();
         }
     }
-
+    
     /**
      * Create new answer. Assign current image + selected text.
      * 
@@ -109,6 +134,21 @@ public class GameActivity extends Activity
             loadQuestion();
         }
     }
+    
+    /**
+     * Little helper to draw something on bitmap.
+     * 
+     * @param bitmap
+     * @param text
+     */
+    private void drawImageInfo(Bitmap bitmap, String text)
+    {
+        Canvas canvas = new Canvas(bitmap);
+        TextPaint paint = new TextPaint();
+        paint.setTextSize(bitmap.getHeight() / 4);
+        paint.setColor(0xFFFF0000);
+        canvas.drawText(text, 0 + 30, bitmap.getHeight() - 30, paint);
+    }
 
     /**
      * Game creation.
@@ -122,30 +162,27 @@ public class GameActivity extends Activity
 
         // Car 1
         car = new Car("BMW X3");
-        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.bmw_x3_small));
-        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x3_medium));
-        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x3_large));
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.bmw_x3_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x3_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x3_large, getResources()));
 
         game.addQuestion(new Question(car, new String[] { "Audi Q5", "BMW X5", "Lexus LX" }));
-        Log.d(TAG, "Game is full " + (game.isFull() ? "yes" : "no"));
 
         // Car 2
         car = new Car("BMW X5");
-        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.bmw_x5_small));
-        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x5_medium));
-        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x5_large));
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.bmw_x5_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x5_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x5_large, getResources()));
 
         game.addQuestion(new Question(car, new String[] { "BMW X3", "Volvo XC60", "Volvo XC90" }));
-        Log.d(TAG, "Game is full " + (game.isFull() ? "yes" : "no"));
 
         // Car 3
         car = new Car("BMW X6");
-        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.bmw_x6_small));
-        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x6_medium));
-        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x6_large));
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.bmw_x6_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x6_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x6_large, getResources()));
 
         game.addQuestion(new Question(car, new String[] { "Audi Q7", "Audi Q3", "Lexus RX" }));
-        Log.d(TAG, "Game is full " + (game.isFull() ? "yes" : "no"));
 
         return game;
     }
