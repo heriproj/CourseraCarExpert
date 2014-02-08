@@ -1,18 +1,20 @@
 package net.devmachine.carexpert;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity
+public class GameActivity extends Activity
 {
-    private static final String TAG       = "CarExpert.Main";
+    public static final String  SCORE     = "SCORE";
+    private static final String TAG       = "CarExpert.Game";
+
     private Game                game      = gameFactory();
     private Button[]            buttonMap = new Button[4];
     private Question            currentQuestion;
@@ -23,7 +25,7 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
 
         // Internal listener. Same for all buttons.
         final OnClickListener listener = new OnClickListener() {
@@ -47,10 +49,10 @@ public class MainActivity extends Activity
         buttonMap[3].setOnClickListener(listener);
 
         imageView = (ImageView) findViewById(R.id.car);
-        
-        // Clicking on image just loads the next if one is available. 
+
+        // Clicking on image just loads the next if one is available.
         imageView.setOnClickListener(new OnClickListener() {
-            
+
             @Override
             public void onClick(View v)
             {
@@ -59,13 +61,6 @@ public class MainActivity extends Activity
         });
 
         loadQuestion();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     /**
@@ -91,6 +86,8 @@ public class MainActivity extends Activity
         if (currentQuestion.hasNexImage()) {
             currentImage = currentQuestion.getNextImage();
             imageView.setImageResource(currentImage.getResourceId());
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.no_image_previews, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -104,7 +101,10 @@ public class MainActivity extends Activity
         game.addAnswer(new Answer(currentImage, answer));
 
         if (game.isOver()) {
-            Toast.makeText(this, "Game over!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, ResultActivity.class);
+            intent.putExtra(SCORE, game.getScore());
+            startActivity(intent);
+            finish(); // Do not return to current activity.
         } else {
             loadQuestion();
         }
@@ -126,7 +126,7 @@ public class MainActivity extends Activity
         car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x3_medium));
         car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x3_large));
 
-        game.addQuestion(new Question(car, new String[] { "a", "b", "c" }));
+        game.addQuestion(new Question(car, new String[] { "Audi Q5", "BMW X5", "Lexus LX" }));
         Log.d(TAG, "Game is full " + (game.isFull() ? "yes" : "no"));
 
         // Car 2
@@ -135,7 +135,7 @@ public class MainActivity extends Activity
         car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x5_medium));
         car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x5_large));
 
-        game.addQuestion(new Question(car, new String[] { "a", "b", "c" }));
+        game.addQuestion(new Question(car, new String[] { "BMW X3", "Volvo XC60", "Volvo XC90" }));
         Log.d(TAG, "Game is full " + (game.isFull() ? "yes" : "no"));
 
         // Car 3
@@ -144,7 +144,7 @@ public class MainActivity extends Activity
         car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x6_medium));
         car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x6_large));
 
-        game.addQuestion(new Question(car, new String[] { "a", "b", "c" }));
+        game.addQuestion(new Question(car, new String[] { "Audi Q7", "Audi Q3", "Lexus RX" }));
         Log.d(TAG, "Game is full " + (game.isFull() ? "yes" : "no"));
 
         return game;

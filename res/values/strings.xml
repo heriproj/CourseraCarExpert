@@ -2,10 +2,12 @@
 <resources>
 
     <string name="app_name">Car Expert</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="question">What car is it?</string>
     <string name="help_message">Tap on the car for help!</string>
     <string name="car_description">A car</string>
+    <string name="no_image_previews">No more images. What car is it?</string>
+    <string name="title_activity_result">Your result</string>
+    <string name="score_result_header">Your score:</string>
+    <string name="try_again_button">Try again</string>
 
 </resources>

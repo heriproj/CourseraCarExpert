@@ -56,6 +56,24 @@ class Game
 
         return score;
     }
+    
+    public static String getResultMessage(int score)
+    {
+        String str;
+        int maxScore = SIZE * 3;
+        
+        if (score == 0) {
+            str = "Oh man!\nDon't you like cars?";
+        } else if (score == maxScore) {
+            str = "Perfect score!\nDo you like cars more than Android? :)";
+        } else if (score <= maxScore / 2) {
+            str = "You can do better!\nKeep trying...";
+        } else {
+            str = "Almost there!\nJust one more time...";
+        }
+        
+        return str;
+    }
 
     private int getAnswerScore(Answer answer)
     {

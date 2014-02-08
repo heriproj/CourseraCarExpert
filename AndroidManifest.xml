@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="net.devmachine.carexpert.MainActivity"
+            android:name="net.devmachine.carexpert.GameActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -22,6 +22,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="net.devmachine.carexpert.ResultActivity"
+            android:label="@string/title_activity_result"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
