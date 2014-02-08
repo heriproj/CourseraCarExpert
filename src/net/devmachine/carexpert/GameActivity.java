@@ -41,19 +41,22 @@ public class GameActivity extends Activity
             }
         };
 
+        final int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        final int screenHeight = getResources().getDisplayMetrics().heightPixels;
+
         // Convenience wrapper around screen dimensions.
         screenDimensions = new Dimensions() {
 
             @Override
             public int getWidth()
             {
-                return getResources().getDisplayMetrics().widthPixels;
+                return screenWidth;
             }
 
             @Override
             public int getHeight()
             {
-                return getResources().getDisplayMetrics().heightPixels;
+                return screenHeight;
             }
         };
 
@@ -71,7 +74,7 @@ public class GameActivity extends Activity
 
         imageView = (ImageView) findViewById(R.id.car);
 
-        // Clicking on image just loads the next if one is available.
+        // Clicking on image loads the next one if available.
         imageView.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -106,7 +109,7 @@ public class GameActivity extends Activity
     {
         if (currentQuestion.hasNexImage()) {
             currentImage = currentQuestion.getNextImage();
-            
+
             Bitmap bitmap = currentImage.getBitmapInDimensions(screenDimensions);
             drawImageInfo(bitmap, String.valueOf(currentImage.getIndex() + 1));
 
@@ -115,7 +118,7 @@ public class GameActivity extends Activity
             Toast.makeText(getApplicationContext(), R.string.no_image_previews, Toast.LENGTH_SHORT).show();
         }
     }
-    
+
     /**
      * Create new answer. Assign current image + selected text.
      * 
@@ -134,7 +137,7 @@ public class GameActivity extends Activity
             loadQuestion();
         }
     }
-    
+
     /**
      * Little helper to draw something on bitmap.
      * 
@@ -147,6 +150,8 @@ public class GameActivity extends Activity
         TextPaint paint = new TextPaint();
         paint.setTextSize(bitmap.getHeight() / 4);
         paint.setColor(0xFFFF0000);
+
+        // Padding should be relative to width/height.
         canvas.drawText(text, 0 + 30, bitmap.getHeight() - 30, paint);
     }
 
@@ -165,24 +170,70 @@ public class GameActivity extends Activity
         car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.bmw_x3_small, getResources()));
         car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x3_medium, getResources()));
         car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x3_large, getResources()));
-
         game.addQuestion(new Question(car, new String[] { "Audi Q5", "BMW X5", "Lexus LX" }));
 
         // Car 2
-        car = new Car("BMW X5");
-        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.bmw_x5_small, getResources()));
-        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x5_medium, getResources()));
-        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x5_large, getResources()));
-
-        game.addQuestion(new Question(car, new String[] { "BMW X3", "Volvo XC60", "Volvo XC90" }));
+        car = new Car("Audi A6");
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.audi_a6_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.audi_a6_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.audi_a6_large, getResources()));
+        game.addQuestion(new Question(car, new String[] { "Honda Accrod", "Volvo S80", "Toyota Camry" }));
 
         // Car 3
+        car = new Car("Jeep Compass");
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.jeep_compass_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.jeep_compass_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.jeep_compass_large, getResources()));
+        game.addQuestion(new Question(car, new String[] { "Infinity QX56", "BMW X5", "Volvo XC60" }));
+
+        // Car 4
         car = new Car("BMW X6");
         car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.bmw_x6_small, getResources()));
         car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x6_medium, getResources()));
         car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x6_large, getResources()));
-
         game.addQuestion(new Question(car, new String[] { "Audi Q7", "Audi Q3", "Lexus RX" }));
+
+        // Car 5
+        car = new Car("Porsche Cayenne");
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.porsche_cayenne_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.porsche_cayenne_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.porsche_cayenne_large, getResources()));
+        game.addQuestion(new Question(car, new String[] { "BMW X6", "Lexus RXH", "Volvo XC90" }));
+
+        // Car 6
+        car = new Car("Volvo S80");
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.volvo_s80_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.volvo_s80_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.volvo_s80_large, getResources()));
+        game.addQuestion(new Question(car, new String[] { "Honda Accord", "Audi A6", "Lexus GS" }));
+
+        // Car 7
+        car = new Car("Infinity QX56");
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.infiniti_qx56_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.infiniti_qx56_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.infiniti_qx56_large, getResources()));
+        game.addQuestion(new Question(car, new String[] { "Porsche Cayenne", "BMW X5", "Audi Q7" }));
+
+        // Car 8
+        car = new Car("BMW X5");
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.bmw_x5_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.bmw_x5_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.bmw_x5_large, getResources()));
+        game.addQuestion(new Question(car, new String[] { "BMW X3", "Volvo XC60", "Volvo XC90" }));
+
+        // Car 9
+        car = new Car("Honda Accord");
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.honda_accord7_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.honda_accord7_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.honda_accord7_large, getResources()));
+        game.addQuestion(new Question(car, new String[] { "Audi A4", "Honda Civic", "Toyota Camry" }));
+
+        // Car 10
+        car = new Car("Lexus GS");
+        car.addImage(new CarImage(CarImage.Size.SMALL, R.drawable.lexus_gs_small, getResources()));
+        car.addImage(new CarImage(CarImage.Size.MEDIUM, R.drawable.lexus_gs_medium, getResources()));
+        car.addImage(new CarImage(CarImage.Size.LARGE, R.drawable.lexus_gs_large, getResources()));
+        game.addQuestion(new Question(car, new String[] { "Audi A8", "Honda Accord", "Volvo S80" }));
 
         return game;
     }

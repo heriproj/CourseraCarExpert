@@ -27,7 +27,8 @@ public class ResultActivity extends Activity
         
         TextView messageView = (TextView) findViewById(R.id.score_message);
         messageView.setText(Game.getResultMessage(score));
-        
+
+        // Button to restart the game.
         Button button = (Button) findViewById(R.id.restart);
         button.setOnClickListener(new OnClickListener() {
             

@@ -5,7 +5,7 @@ package net.devmachine.carexpert;
  */
 class Game
 {
-    private static int SIZE           = 3;
+    private static int SIZE           = 10;
 
     private Question   questions[]    = new Question[SIZE];
     private Answer     answers[]      = new Answer[SIZE];

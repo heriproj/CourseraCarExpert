@@ -3,7 +3,7 @@
 
     <string name="app_name">Car Expert</string>
     <string name="question">What car is it?</string>
-    <string name="help_message">Tap on the car for help!</string>
+    <string name="help_message">Tap on the car for help (reduces score).</string>
     <string name="car_description">A car</string>
     <string name="no_image_previews">No more images. What car is it?</string>
     <string name="title_activity_result">Your result</string>
